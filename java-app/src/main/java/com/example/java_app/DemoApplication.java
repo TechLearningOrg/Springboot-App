@@ -14,6 +14,6 @@ public class DemoApplication {   // class name matches file
 
     @GetMapping("/")
     public String hello() {
-        return "Hello World from Java Spring Boot";
+        return "Hello World from prince and Java Spring Boot";
     }
 }
