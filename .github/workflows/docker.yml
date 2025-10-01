@@ -26,10 +26,22 @@ jobs:
           username: "prince0127"
           password: "Docker@27."
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./DEVOPS/${{ matrix.app }}
-          file: ./DEVOPS/${{ matrix.app }}/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.app }}:latest
+      - name: Build Docker image
+        run: |
+          docker build -t prince0127/java-app:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push prince0127/java-app:latest
+
+      - name: Stop and remove old container (if exists)
+        run: |
+          if [ $(docker ps -aq -f name=my-app) ]; then
+            docker stop my-app
+            docker rm my-app
+          fi
+
+      - name: Run Docker container
+        run: |
+          docker run -d --name my-app -p 8080:8080 prince0127/java-app:latest
+          
